@@ -33,7 +33,7 @@
 - webpack.config.js文件结构如下:
 
 ```javascript
-  var htmlwp = require('html-webpack-plugin'); // 导入html-webpack-plugin 包，用来根据模板自动生成index.html,用来实现热刷新
+var htmlwp = require('html-webpack-plugin'); // 导入html-webpack-plugin 包，用来根据模板自动生成index.html,用来实现热刷新
   module.exports={
   entry:'./src/main.js', // 定义打包的入口文件路径
   output:{
@@ -79,8 +79,7 @@ module.exports={
                 loader:'style-loader!css-loader'//注意style-loader必须放到前面
             },
 ```
-- 在main.js中导入新建的.css文件
-- ​
+- 在main.js中导入新建的.css文件 ​
 ```javascript
   require("/statics/css/site.css");
 ```
@@ -94,19 +93,10 @@ module.exports={
 
 #### 在webpack.config.js中进行配置
 ```javascript
-     var htmlwp = require('html-webpack-plugin');
-module.exports={
-    entry:'./src/main.js', 
-    output:{
-        path : __dirname+'/dist', 
-        filename:'build.js'
-    },
-    module:{
-        loaders:[
-            {
-                test:/\.scss$/,//表示所有的.scss文件被此loader处理
-                loader:'style-loader!css-loader!sass-loader'
-            },
+    {
+        test: /\.less/, //打包 .less文件
+        loader: 'style-loader!css-loader!less-loader'
+    }
 ```
 #### 在main.js中导入新建的.scss文件
 require('../statics/css/site1.scss')
@@ -183,29 +173,18 @@ module.exports={
 - 在项目根目录下打开cmd命令面板，输入：
         cnpm i babel-core@6.24.0 babel-loader@6.4.1 babel-plugin-transform-runtime@6.23.0 babel-preset-es2015@6.24.0 --save-dev 回车即可完成安装
 #### 在webpack.config.js中进行配置
-  ```javascript
-  var htmlwp = require('html-webpack-plugin'); // 导入html-webpack-plugin 包，用来根据模板自动生成index.html
-  module.exports={
-  entry:'./src/main.js', // 定义打包的入口文件路径
-  output:{
-  	path:'__dirname+'/dist',   //打包的文件存放目录(注意这里要求路径必须是绝对路径可以用__dirname来获取到当前目录所在的文件路径+当前文件夹名称)
-  	filename:'build.js'  // 打包以后生成的文件名称(项目开发中最好就写build.js)
-  },
-  module:{
-  	loaders:[
-  		{
-  			// 将当前项目中所有的.js文件都要进行es6转es5操作，node_moudels除外
-  			test:/\.js$/,   //表示当前要打包的文件的后缀正则表达式
-  			// loader:'babel-loader?presets[]=es2015', //如果写到这里，将来在打包.vue文件的时候会报错，表示先利用css-loader解析.css文件，再调用style-loader打包
-  			loader:'babel-loader',
-  			exclude:/node_modules/  //node_modules中的所有.js文件不去转换，提高打包性能
-  		}
-  	]
-  },
-  babel:{//注意写到loaders外部(只能在webpack1.0中使用)
-  	 presets: ['es2015'],  //表示es6转es5
-  	 plugins: ['transform-runtime']  //这句代码就是为了解决打包.vue文件不报错
-  },
+```javascript
+    {
+        // 将当前项目中所有的.js文件都要进行es6转es5操作，node_moudels除外
+        test:/\.js$/,   //表示当前要打包的文件的后缀正则表达式
+        // loader:'babel-loader?presets[]=es2015', //如果写到这里，将来在打包.vue文件的时候会报错，表示先利用css-loader解析.css文件，再调用style-loader打包
+        loader:'babel-loader',
+        exclude:/node_modules/  //node_modules中的所有.js文件不去转换，提高打包性能
+    }
+babel:{//注意写到loaders外部(只能在webpack1.0中使用)
+    presets: ['es2015'],  //表示es6转es5
+    plugins: ['transform-runtime']  //这句代码就是为了解决打包.vue文件不报错
+},
 ```
 - 在main.js中使用es6语法导入site.css
 ```javascript
@@ -265,7 +244,7 @@ import '../statics/css/site.css'
 - html-webpack-plugin 配置步骤：
     1. 在webpack.config.js中加入如下代码：
         + 导入html-webpack-plugin 包,获取到插件对象
-```javascript        
+```javascript       
   var htmlwp = require('html-webpack-plugin');//注意要写到webpack.config.js的最顶部
         plugins:[///注意最好写到webpack.config.js的最底部
         new htmlwp({
@@ -325,7 +304,7 @@ babel:{
 
     1. cnpm install vue  --save
     2. 在main.js中编写解析.vue的代码
-```javascript    
+```javascript
         // 1.0 导入vue这个包
         import Vue from 'vue';
 
@@ -383,11 +362,11 @@ c=c(App);//es6的写法
 - 2、在webpack打包入口js文件中配置如下:
 ```javascript
    import Vue from 'vue'; //导入vue包
-   import VueRouter from 'vue-router;
+   import VueRouter from 'vue-router';
    Vue.use(VueRouter); //在Vue中使用路由
      //导入路由组件
-     import home from "./components/home.vue"
-     import shopcar from "./components/shopcar/shopcar.vue"
+     import home from "./components/home.vue";
+     import shopcar from "./components/shopcar/shopcar.vue";
     //定制路由规则
     var router=new vueRouter({
     routes:[
@@ -408,7 +387,7 @@ c=c(App);//es6的写法
 - 官网：http://mint-ui.github.io
 1. 利用：npm install mint-ui --save 命令将mint-ui安装到项目中
 2. 在main.js中导入mint-ui
-```javascript   
+```javascript
 import "imnt-ui/lib/style.min.css"//导入mint-ui的样式文件
 import mintUI from 'mint-ui'
 Vue.use(mintUI)//进行绑定
@@ -417,4 +396,4 @@ Vue.use(mintUI)//进行绑定
 - MUI是最接近原生APP体验的高性能前端框架，MUI不依赖任何第三方JS库，压缩后的JS和CSS文件仅有100+K和60+K , 我们项目中主要使用它的css布局，对于js特效没有用到
 - MUI官网：http://dev.dcloud.net.cn/mui/
 - 在main.js中导入mui相关的css
- import '../statics/mui/css/mui.css'
+        import '../statics/mui/css/mui.css'
